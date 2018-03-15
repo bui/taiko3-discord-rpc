@@ -49,6 +49,13 @@ LEVELS = {
     50331648: 'Extreme'
 }
 
+LEVELS_TOMODACHI = {
+    0: 'Easy',
+    1: 'Medium',
+    2: 'Hard',
+    3: 'Extreme'
+}
+
 parser = argparse.ArgumentParser()
 parser.add_argument('server', help='console IP address')
 parser.add_argument('client_id', help='Discord client ID')
@@ -66,6 +73,7 @@ if __name__ == '__main__':
     rpc.start()
 
     last_event = None
+    last_select = None
     while True:
         event = int(hexlify(gecko.readmem(0x1056A684, 4)), 16)
 
@@ -73,9 +81,14 @@ if __name__ == '__main__':
             last_event = event
 
             if event == 11:
-                course = int(hexlify(gecko.readmem(0x105F41E8, 4)), 16)
-                difficulty = int(hexlify(gecko.readmem(0x105F41EC, 4)), 16)
-                level = LEVELS[difficulty]
+                if last_select == 'tomodachi':
+                    course = int(hexlify(gecko.readmem(0x1058AB9C, 4)), 16)
+                    difficulty = int(hexlify(gecko.readmem(0x1058A960, 4)), 16)
+                    level = LEVELS_TOMODACHI[difficulty]
+                else:
+                    course = int(hexlify(gecko.readmem(0x105F41E8, 4)), 16)
+                    difficulty = int(hexlify(gecko.readmem(0x105F41EC, 4)), 16)
+                    level = LEVELS[difficulty]
 
                 song_title = '???'
                 if str(course) in songlist:
@@ -85,6 +98,11 @@ if __name__ == '__main__':
                                  details='%s on %s' % (song_title, level),
                                  large_image='taiko', small_image='df_%s' % level.lower(),
                                  small_text=level)
+            else:
+                if event == 9:
+                    last_select = 'taiko'
+                if event == 25:
+                    last_select = 'tomodachi'
 
-            elif event not in [0, 2, 3, 5]:
-                rpc.set_activity(state=MODES[event], large_image='taiko')
+                if event not in [0, 2, 3, 5]:
+                    rpc.set_activity(state=MODES[event], large_image='taiko')
