@@ -10,36 +10,40 @@ import sys
 from binascii import hexlify
 
 MODES = {
-    0: 'Starting up',
-    2: 'Saving game',
-    3: 'Checking DLC',
-    5: '???',
-    6: 'On title screen',
-    7: 'Selecting players',
-    8: 'In main menu',
-    9: 'Selecting a song',
-    10: 'Selecting a baton song',
-    11: 'Playing a song',
-    12: 'Viewing results',
-    13: 'Making a Don',
-    14: 'Playing Intoro-don',
-    15: 'Mecha-don Gacha',
-    16: 'In stats menu',
-    17: 'Viewing stamps',
-    18: 'Viewing player stats',
-    19: 'Hanko',
-    20: 'In DLC menu',
-    21: 'In settings menu',
-    22: 'Playing tutorial',
-    24: 'Tomodachi main menu',
-    25: 'Tomodachi select',
-    26: 'Tomodachi results',
-    28: 'Tomodachi home',
-    29: 'Tomodachi collection',
-    30: 'Tomodachi settings',
-    31: 'Tomodachi difficulty select',
-    32: 'Tomodachi cutscene',
-    34: '15th cutscene'
+    6: ('In a menu', 'Title Screen'),
+    7: ('In a menu', 'Player Entry'),
+    8: ('In a menu', 'Main Menu'),
+
+    9: ('Taiko Mode', 'Selecting a song'),
+    10: ('Baton Touch', 'Selecting a song'),
+
+    11: ('Taiko Mode',),
+    12: ('Taiko Mode', 'Viewing results'),
+
+    13: ('Kisekae Studio',),
+    14: ('Intro-don',),
+    15: ('Mecha-don Gacha',),
+
+    16: ('In a menu', 'Stats'),
+    17: ('Looking at stats', 'Stamp Book'),
+    18: ('Looking at stats', 'Player Stats'),
+    19: ('Looking at stats', 'Seals'),
+
+    20: ('In a menu', 'Additional Content'),
+    21: ('In a menu', 'Settings'),
+    22: ('Playing tutorial',),
+
+    24: ('In a menu', 'Tomodachi Daisakusen'),
+    25: ('Tomodachi Daisakusen', 'On the streets'),
+    26: ('Tomodachi Daisakusen', 'Viewing results'),
+    28: ('Tomodachi Daisakusen', 'Wada House'),
+    29: ('Tomodachi Daisakusen', 'Friend Book'),
+    30: ('Tomodachi Daisakusen', 'Settings'),
+    31: ('Tomodachi Daisakusen', 'Selecting difficulty'),
+
+    32: ('Tomodachi Daisakusen', 'In a cutscene'),
+    33: ('Tomodachi Daisakusen', 'In a cutscene'),
+    34: ('In a cutscene',)
 }
 
 LEVELS = {
@@ -82,10 +86,12 @@ if __name__ == '__main__':
                 if str(course) in songlist:
                     song_title = songlist[str(course)]
 
-                rpc.set_activity(state=MODES[event],
-                                 details='%s on %s' % (song_title, level),
-                                 large_image='taiko', small_image='df_%s' % level.lower(),
+                rpc.set_activity(state=MODES[event][0],
+                                 details=song_title, large_image='taiko',
+                                 small_image='df_%s' % level.lower(),
                                  small_text=level)
-            else:
-                if event not in [0, 2, 3, 5]:
-                    rpc.set_activity(state=MODES[event], large_image='taiko')
+
+            elif event in MODES:
+                mode = MODES[event]
+                rpc.set_activity(state=mode[0], details=mode[1] if len(mode) > 1 else None,
+                                 large_image='taiko')
