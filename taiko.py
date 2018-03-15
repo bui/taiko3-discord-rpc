@@ -44,13 +44,6 @@ MODES = {
 
 LEVELS = {
     0: 'Easy',
-    16777216: 'Medium',
-    33554432: 'Hard',
-    50331648: 'Extreme'
-}
-
-LEVELS_TOMODACHI = {
-    0: 'Easy',
     1: 'Medium',
     2: 'Hard',
     3: 'Extreme'
@@ -81,14 +74,9 @@ if __name__ == '__main__':
             last_event = event
 
             if event == 11:
-                if last_select == 'tomodachi':
-                    course = int(hexlify(gecko.readmem(0x1058AB9C, 4)), 16)
-                    difficulty = int(hexlify(gecko.readmem(0x1058A960, 4)), 16)
-                    level = LEVELS_TOMODACHI[difficulty]
-                else:
-                    course = int(hexlify(gecko.readmem(0x105F41E8, 4)), 16)
-                    difficulty = int(hexlify(gecko.readmem(0x105F41EC, 4)), 16)
-                    level = LEVELS[difficulty]
+                course = int(hexlify(gecko.readmem(0x1058AB9C, 4)), 16)
+                difficulty = int(hexlify(gecko.readmem(0x1058A960, 4)), 16)
+                level = LEVELS[difficulty]
 
                 song_title = '???'
                 if str(course) in songlist:
@@ -99,10 +87,5 @@ if __name__ == '__main__':
                                  large_image='taiko', small_image='df_%s' % level.lower(),
                                  small_text=level)
             else:
-                if event == 9:
-                    last_select = 'taiko'
-                if event == 25:
-                    last_select = 'tomodachi'
-
                 if event not in [0, 2, 3, 5]:
                     rpc.set_activity(state=MODES[event], large_image='taiko')
