@@ -108,6 +108,13 @@ def launch_title(gecko, title):
 
 if __name__ == '__main__':
     try:
+        songlist = json.loads(open('song_data.json', 'r').read())
+    except FileNotFoundError:
+        sys.exit('song_data.json not found, use extract_songs.py to build it')
+    except json.decoder.JSONDecodeError:
+        sys.exit('song_data.json does not contain valid JSON')
+
+    try:
         gecko = tcpgecko.TCPGecko(args.server)
     except TimeoutError:
         sys.exit('Unable to connect to tcpGecko - are you sure it\'s running on your console?')
@@ -121,14 +128,11 @@ if __name__ == '__main__':
         else:
             sys.exit('Taiko no Tatsujin is not running on your Wii U. Launch it first, or use --launch-auto')
 
-    songlist = json.loads(open('song_data.json', 'r').read())
-
     print('Connecting to Discord RPC...')
     rpc = pypresence.client(args.client_id)
     rpc.start()
 
     last_event = None
-    last_select = None
     while True:
         event = int(hexlify(gecko.readmem(0x1056A684, 4)), 16)
 
