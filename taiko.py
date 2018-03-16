@@ -4,6 +4,7 @@
 import argparse
 import json
 import sys
+import time
 
 from binascii import hexlify
 
@@ -65,13 +66,16 @@ LEVELS = {
     3: 'Extreme'
 }
 
+TAIKO_TITLE = 0x50000101D3000
+
 parser = argparse.ArgumentParser()
 parser.add_argument('server', help='console IP address')
 parser.add_argument('client_id', help='Discord client ID')
+parser.add_argument('-l', '--launch-auto', help='launch title automatically if not running', action='store_true')
 args = parser.parse_args()
 
 
-def get_title_id(gecko):
+def get_current_title(gecko):
     ver = gecko.getversion()
     if ver == 550:
         loc = 0x10013C10
@@ -84,7 +88,22 @@ def get_title_id(gecko):
     else:
         sys.exit('Your Wii U firmware version is not supported. Please update.')
 
-    return hexlify(gecko.readmem(loc, 8))
+    return int(hexlify(gecko.readmem(loc, 8)), 16)
+
+
+def is_title_installed(gecko, title):
+    return gecko.get_symbol('sysapp.rpl', 'SYSCheckTitleExists', True)(title >> 32, title & 0xFFFFFFFF)
+
+
+def launch_title(gecko, title):
+    gecko.get_symbol('sysapp.rpl', 'SYSLaunchTitle', True)(title >> 32, title & 0xFFFFFFFF)
+
+    # tcpgecko restarts when title changes, so we need to reconnect
+    time.sleep(30) # safe enough?
+
+    print('Title changed; reconnecting...')
+    gecko = tcpgecko.TCPGecko(args.server)
+    return gecko
 
 
 if __name__ == '__main__':
@@ -93,8 +112,14 @@ if __name__ == '__main__':
     except TimeoutError:
         sys.exit('Unable to connect to tcpGecko - are you sure it\'s running on your console?')
 
-    if get_title_id(gecko) != b'00050000101d3000':
-        sys.exit('It looks like the game isn\'t running on your Wii U. Please launch it and try again.')
+    if get_current_title(gecko) != TAIKO_TITLE:
+        if args.launch_auto:
+            if is_title_installed(gecko, TAIKO_TITLE):
+                gecko = launch_title(gecko, TAIKO_TITLE)
+            else:
+                sys.exit('Taiko no Tatsujin 3 is not installed on your Wii U.')
+        else:
+            sys.exit('Taiko no Tatsujin is not running on your Wii U. Launch it first, or use --launch-auto')
 
     songlist = json.loads(open('song_data.json', 'r').read())
 
