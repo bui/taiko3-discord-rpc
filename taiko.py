@@ -3,11 +3,23 @@
 
 import argparse
 import json
-import tcpgecko
-import pypresence
 import sys
 
 from binascii import hexlify
+
+if (sys.version_info < (3, 0)):
+    sys.exit('This program only runs on Python 3.')
+
+try:
+    import tcpgecko
+except ModuleNotFoundError:
+    sys.exit('tcpgecko.py not found! Download it (and common.py) from https://github.com/wiiudev/pyGecko\n' \
+             'Make sure to also convert tcpgecko.py to Python 3 code - use the 2to3 tool for this')
+
+try:
+    import pypresence
+except ModuleNotFoundError:
+    sys.exit('pypresence.py not found! Download it from https://github.com/qwertyquerty/pypresence')
 
 MODES = {
     6: ('In a menu', 'Title Screen'),
@@ -59,9 +71,30 @@ parser.add_argument('client_id', help='Discord client ID')
 args = parser.parse_args()
 
 
+def get_title_id(gecko):
+    ver = gecko.getversion()
+    if ver == 550:
+        loc = 0x10013C10
+    elif ver < 550 and ver >= 532:
+        loc = 0x100136D0
+    elif ver < 532 and ver >= 500:
+        loc = 0x10013010
+    elif ver == 410:
+        loc = 0x1000ECB0
+    else:
+        sys.exit('Your Wii U firmware version is not supported. Please update.')
+
+    return hexlify(gecko.readmem(loc, 8))
+
+
 if __name__ == '__main__':
-    print('Connecting to tcpGecko...')
-    gecko = tcpgecko.TCPGecko(args.server)
+    try:
+        gecko = tcpgecko.TCPGecko(args.server)
+    except TimeoutError:
+        sys.exit('Unable to connect to tcpGecko - are you sure it\'s running on your console?')
+
+    if get_title_id(gecko) != b'00050000101d3000':
+        sys.exit('It looks like the game isn\'t running on your Wii U. Please launch it and try again.')
 
     songlist = json.loads(open('song_data.json', 'r').read())
 
