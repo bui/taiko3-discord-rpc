@@ -13,7 +13,7 @@ Song titles in `song_data.json` are ripped from the game data using `extract_son
 
 ## Usage
 1. Run tcpGecko on your Wii U
-2. Run Taiko no Tatsujin on your Wii U
+2. Run Taiko no Tatsujin on your Wii U (not required if you use `--launch-auto`)
 3. Run `taiko.py` supplying your Wii U's IP address and your Discord app's client ID
 	* For example: `./taiko.py 192.168.0.10 422847967347867654`
 4. Start playing!
