@@ -8,13 +8,13 @@ import time
 
 from binascii import hexlify
 
-if (sys.version_info < (3, 0)):
+if sys.version_info < (3, 0):
     sys.exit('This program only runs on Python 3.')
 
 try:
     import tcpgecko
 except ModuleNotFoundError:
-    sys.exit('tcpgecko.py not found! Download it (and common.py) from https://github.com/wiiudev/pyGecko\n' \
+    sys.exit('tcpgecko.py not found! Download it (and common.py) from https://github.com/wiiudev/pyGecko\n'
              'Make sure to also convert tcpgecko.py to Python 3 code - use the 2to3 tool for this')
 
 try:
@@ -25,13 +25,13 @@ except ModuleNotFoundError:
 MODES = {
     6: ('In a menu', 'Title Screen'),
     7: ('In a menu', 'Player Entry'),
-    8: ('In a menu', 'Main Menu'),
+    8: ('In a menu', 'Mode Select'),
 
-    9: ('Taiko Mode', 'Selecting a song'),
-    10: ('Baton Touch', 'Selecting a song'),
+    9: ('Taiko Mode', 'Song Select'),
+    10: ('Baton Touch', 'Song Select'),
 
     11: ('Taiko Mode',),
-    12: ('Taiko Mode', 'Viewing results'),
+    12: ('Taiko Mode', 'Results'),
 
     13: ('Kisekae Studio',),
     14: ('Intro-don',),
@@ -44,15 +44,15 @@ MODES = {
 
     20: ('In a menu', 'Additional Content'),
     21: ('In a menu', 'Settings'),
-    22: ('Playing tutorial',),
+    22: ('Tutorial',),
 
     24: ('In a menu', 'Tomodachi Daisakusen'),
     25: ('Tomodachi Daisakusen', 'On the streets'),
-    26: ('Tomodachi Daisakusen', 'Viewing results'),
+    26: ('Tomodachi Daisakusen', 'Results'),
     28: ('Tomodachi Daisakusen', 'Wada House'),
     29: ('Tomodachi Daisakusen', 'Friend Book'),
     30: ('Tomodachi Daisakusen', 'Settings'),
-    31: ('Tomodachi Daisakusen', 'Selecting difficulty'),
+    31: ('Tomodachi Daisakusen', 'Difficulty Select'),
 
     32: ('Tomodachi Daisakusen', 'In a cutscene'),
     33: ('Tomodachi Daisakusen', 'In a cutscene'),
@@ -61,16 +61,17 @@ MODES = {
 
 LEVELS = {
     0: 'Easy',
-    1: 'Medium',
+    1: 'Normal',
     2: 'Hard',
     3: 'Extreme'
 }
 
 TAIKO_TITLE = 0x50000101D3000
+DEFAULT_CLIENT_ID = 422847967347867654
 
 parser = argparse.ArgumentParser()
 parser.add_argument('server', help='console IP address')
-parser.add_argument('client_id', help='Discord client ID')
+parser.add_argument('-c', '--client-id', help='Discord client ID')
 parser.add_argument('-l', '--launch-auto', help='launch title automatically if not running', action='store_true')
 args = parser.parse_args()
 
@@ -99,7 +100,7 @@ def launch_title(gecko, title):
     gecko.get_symbol('sysapp.rpl', 'SYSLaunchTitle', True)(title >> 32, title & 0xFFFFFFFF)
 
     # tcpgecko restarts when title changes, so we need to reconnect
-    time.sleep(30) # safe enough?
+    time.sleep(30)  # safe enough?
 
     print('Title changed; reconnecting...')
     gecko = tcpgecko.TCPGecko(args.server)
@@ -108,11 +109,11 @@ def launch_title(gecko, title):
 
 if __name__ == '__main__':
     try:
-        songlist = json.loads(open('song_data.json', 'r').read())
+        songlist = json.loads(open('data/song_data.json', 'r').read())
     except FileNotFoundError:
-        sys.exit('song_data.json not found, use extract_songs.py to build it')
+        sys.exit('data/song_data.json not found, use extract_songs.py to build it')
     except json.decoder.JSONDecodeError:
-        sys.exit('song_data.json does not contain valid JSON')
+        sys.exit('data/song_data.json does not contain valid JSON')
 
     try:
         gecko = tcpgecko.TCPGecko(args.server)
@@ -129,7 +130,7 @@ if __name__ == '__main__':
             sys.exit('Taiko no Tatsujin is not running on your Wii U. Launch it first, or use --launch-auto')
 
     print('Connecting to Discord RPC...')
-    rpc = pypresence.client(args.client_id)
+    rpc = pypresence.client(args.client_id or str(DEFAULT_CLIENT_ID))
     rpc.start()
 
     last_event = None

@@ -2,13 +2,12 @@
 # -*- coding: utf-8 -*-
 
 import json
-import os
 import os.path
 import xml.etree.cElementTree
 import zlib
 
 from io import BytesIO
-from struct import pack, unpack
+from struct import unpack
 
 DIRS = {
     'base': r'D:\WUP\DATA\EMULATORS\Cemu\GAMES\Taiko no Tatsujin Atsumete TomodachiDaisakusen! [BT3JAF]',
@@ -29,7 +28,7 @@ def process_drp(path, search):
         fname = drp.read(0x40).split(b'\x00')[0]
         
         drp.seek(0x10, 1)
-        fsize, fsize2, fsize3, fsize4, uncompressedSize = unpack('>5I', drp.read(4*5))
+        fsize, fsize2, fsize3, fsize4, uncompressedsize = unpack('>5I', drp.read(4*5))
         data = drp.read(fsize2-4)
         if fsize > 80:
             data = zlib.decompress(data)
@@ -64,7 +63,7 @@ if __name__ == '__main__':
             tmps.update(dlc)
             songs = tmps
 
-    with open('song_data.json', 'w') as fp:
+    with open('data/song_data.json', 'w') as fp:
         fp.write(json.dumps(songs))
         fp.close()
 

@@ -9,11 +9,12 @@ To use this program, you'll need to download its two dependencies manually.
 * **[pyGecko](https://github.com/wiiudev/pyGecko)** - drop `tcpgecko.py` and `common.py` in the same directory as `taiko.py`.
 	* You'll also need to convert `tcpgecko.py` to Python 3 using `2to3`. For example: `2to3 -w tcpgecko.py`
 
-Song titles in `song_data.json` are ripped from the game data using `extract_songs.py`, but a pre-built version is provided for your convenience. This build includes all DLC songs.
+Song titles in `data/song_data.json` are ripped from the game data using `extract_songs.py`, but a pre-built version is provided for your convenience. This build includes all DLC songs.
 
 ## Usage
 1. Run tcpGecko on your Wii U
 2. Run Taiko no Tatsujin on your Wii U (not required if you use `--launch-auto`)
-3. Run `taiko.py` supplying your Wii U's IP address and your Discord app's client ID
-	* For example: `./taiko.py 192.168.0.10 422847967347867654`
+3. Run `taiko.py` supplying your Wii U's IP address
+	* For example: `./taiko.py 192.168.0.10`
+	* Use `--client-id [ID]` if you want to use your own Discord application
 4. Start playing!
