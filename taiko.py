@@ -30,8 +30,8 @@ MODES = {
     9: ('Taiko Mode', 'Song Select'),
     10: ('Baton Touch', 'Song Select'),
 
-    11: ('Taiko Mode',),
-    12: ('Taiko Mode', 'Results'),
+    11: ('Playing song',),
+    12: ('Results',),
 
     13: ('Kisekae Studio',),
     14: ('Intro-don',),
@@ -64,6 +64,12 @@ LEVELS = {
     1: 'Normal',
     2: 'Hard',
     3: 'Extreme'
+}
+
+SONG_MODES = {
+    0: 'Taiko Mode',
+    1: 'Tomodachi Daisakusen',
+    2: 'Baton Touch'
 }
 
 TAIKO_TITLE = 0x50000101D3000
@@ -139,6 +145,12 @@ if __name__ == '__main__':
 
         if event != last_event:
             last_event = event
+            mode = MODES[event] if event in MODES else None
+
+            song_mode = None
+            mode_id = int(hexlify(gecko.readmem(0x10566174, 4)), 16)
+            if mode_id in SONG_MODES:
+                song_mode = SONG_MODES[mode_id]
 
             if event == 11:
                 course = int(hexlify(gecko.readmem(0x1058AB9C, 4)), 16)
@@ -149,12 +161,15 @@ if __name__ == '__main__':
                 if str(course) in songlist:
                     song_title = songlist[str(course)]
 
-                rpc.set_activity(state=MODES[event][0],
+                rpc.set_activity(state=song_mode,
                                  details=song_title, large_image='taiko',
-                                 small_image='df_%s' % level.lower(),
+                                 small_image='level_%s' % difficulty,
                                  small_text=level)
-
-            elif event in MODES:
-                mode = MODES[event]
-                rpc.set_activity(state=mode[0], details=mode[1] if len(mode) > 1 else None,
+            elif event == 12:
+                rpc.set_activity(state=song_mode,
+                                 details=mode[0],
+                                 large_image='taiko')
+            elif mode:
+                rpc.set_activity(state=mode[0],
+                                 details=mode[1] if len(mode) > 1 else None,
                                  large_image='taiko')
