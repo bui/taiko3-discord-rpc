@@ -43,8 +43,14 @@ def process_drp(path, search):
             song_id = song.find('uniqueId').text
             song_title = song.find('title').text
 
+            stars_easy = int(song.find('starEasy').text)
+            stars_normal = int(song.find('starNormal').text)
+            stars_hard = int(song.find('starHard').text)
+            stars_extreme = int(song.find('starMania').text)
+
             if song_id not in songs.keys():
-                proc_songs[song_id] = song_title
+                proc_songs[song_id] = {'title': song_title, 'stars': {'0': stars_easy, '1': stars_normal,
+                                                                      '2': stars_hard, '3': stars_extreme}}
 
     drp.close()
     return proc_songs
