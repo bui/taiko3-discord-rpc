@@ -164,7 +164,7 @@ if __name__ == '__main__':
                     song_stars = song['stars'][str(difficulty)]
                     level = '%s (%s\u2605)' % (level, song_stars)
 
-                rpc.set_activity(state=song_mode, details=song['title'], large_image='taiko',
+                rpc.set_activity(state=song_mode, details=song_title, large_image='taiko',
                                  small_image='level_%s' % difficulty, small_text=level)
             elif event == 12:
                 rpc.set_activity(state=song_mode, details=mode[0], large_image='taiko')
