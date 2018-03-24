@@ -131,9 +131,9 @@ if __name__ == '__main__':
             if is_title_installed(gecko, TAIKO_TITLE):
                 gecko = launch_title(gecko, TAIKO_TITLE)
             else:
-                sys.exit('Taiko no Tatsujin 3 is not installed on your Wii U.')
+                sys.exit('Taiko no Tatsujin: ATD is not installed on your Wii U.')
         else:
-            sys.exit('Taiko no Tatsujin is not running on your Wii U. Launch it first, or use --launch-auto')
+            sys.exit('Taiko no Tatsujin: ATD is not running on your Wii U. Launch it first, or use --launch-auto')
 
     print('Connecting to Discord RPC...')
     rpc = pypresence.client(args.client_id or str(DEFAULT_CLIENT_ID))
@@ -159,17 +159,14 @@ if __name__ == '__main__':
 
                 song_title = '???'
                 if str(course) in songlist:
-                    song_title = songlist[str(course)]
+                    song = songlist[str(course)]
+                    song_title = song['title']
+                    song_stars = song['stars'][str(difficulty)]
+                    level = '%s (%s\u2605)' % (level, song_stars)
 
-                rpc.set_activity(state=song_mode,
-                                 details=song_title, large_image='taiko',
-                                 small_image='level_%s' % difficulty,
-                                 small_text=level)
+                rpc.set_activity(state=song_mode, details=song_title, large_image='taiko',
+                                 small_image='level_%s' % difficulty, small_text=level)
             elif event == 12:
-                rpc.set_activity(state=song_mode,
-                                 details=mode[0],
-                                 large_image='taiko')
+                rpc.set_activity(state=song_mode, details=mode[0], large_image='taiko')
             elif mode:
-                rpc.set_activity(state=mode[0],
-                                 details=mode[1] if len(mode) > 1 else None,
-                                 large_image='taiko')
+                rpc.set_activity(state=mode[0], details=mode[1] if len(mode) > 1 else None, large_image='taiko')
