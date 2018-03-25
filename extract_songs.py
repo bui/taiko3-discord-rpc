@@ -9,13 +9,20 @@ import zlib
 from io import BytesIO
 from struct import unpack
 
-DIRS = {
-    'base': r'D:\WUP\DATA\EMULATORS\Cemu\GAMES\Taiko no Tatsujin Atsumete TomodachiDaisakusen! [BT3JAF]',
-    'update': r'D:\WUP\DATA\EMULATORS\Cemu\BIN\mlc01\usr\title\00050000\101d3000'
-}
+DIRS = \
+    {'wiiu': {
+        'base': r'D:\WUP\DATA\EMULATORS\Cemu\GAMES\Taiko no Tatsujin Wii U version! [AT5JAF]',
+        'update': r'D:\WUP\DATA\EMULATORS\Cemu\BIN\mlc01\usr\title\00050000\10132200'
+    }, 'wiiu2': {
+        'base': r'D:\WUP\DATA\EMULATORS\Cemu\GAMES\Taiko no Tatsujin Tokumori! [BT9JAF]',
+        'update': r'D:\WUP\DATA\EMULATORS\Cemu\BIN\mlc01\usr\title\00050000\10192000'
+    }, 'wiiu3': {
+        'base': r'D:\WUP\DATA\EMULATORS\Cemu\GAMES\Taiko no Tatsujin Atsumete TomodachiDaisakusen! [BT3JAF]',
+        'update': r'D:\WUP\DATA\EMULATORS\Cemu\BIN\mlc01\usr\title\00050000\101d3000'
+    }}
 
 
-def process_drp(path, search):
+def process_drp(path, search, taiko):
     proc_songs = {}
 
     drp = open(path, 'rb')
@@ -48,29 +55,32 @@ def process_drp(path, search):
             stars_hard = int(song.find('starHard').text)
             stars_extreme = int(song.find('starMania').text)
 
+            level_keys = list(json.loads(open('data/%s/values.json' % taiko, encoding='utf8').read())['levels'].keys())
             if song_id not in songs.keys():
-                proc_songs[song_id] = {'title': song_title, 'stars': {'0': stars_easy, '1': stars_normal,
-                                                                      '2': stars_hard, '3': stars_extreme}}
+                proc_songs[song_id] = {'title': song_title,
+                                       'stars': {level_keys[0]: stars_easy, level_keys[1]: stars_normal,
+                                                 level_keys[2]: stars_hard, level_keys[3]: stars_extreme}}
 
     drp.close()
     return proc_songs
 
 
 if __name__ == '__main__':
-    songs = {}
+    for k, v in DIRS.items():
+        songs = {}
 
-    base_songs = process_drp(os.path.join(DIRS['base'], r'content\Common\database\db_pack.drp'), b'musicinfo_db')
-    songs = base_songs
+        base_songs = process_drp(os.path.join(v['base'], r'content\Common\database\db_pack.drp'), b'musicinfo_db', k)
+        songs = base_songs
 
-    for path, dirs, files in os.walk(os.path.join(DIRS['update'], r'aoc\content')):
-        if 'musicInfo.drp' in files:
-            dlc = process_drp(os.path.join(path, 'musicInfo.drp'), b'musicinfo_db')
-            tmps = songs.copy()
-            tmps.update(dlc)
-            songs = tmps
+        for path, dirs, files in os.walk(os.path.join(v['update'], r'aoc\content')):
+            if 'musicInfo.drp' in files:
+                dlc = process_drp(os.path.join(path, 'musicInfo.drp'), b'musicinfo_db', k)
+                tmps = songs.copy()
+                tmps.update(dlc)
+                songs = tmps
 
-    with open('data/song_data.json', 'w') as fp:
-        fp.write(json.dumps(songs))
-        fp.close()
+        with open('data/%s/song_data.json' % k, 'w') as fp:
+            fp.write(json.dumps(songs))
+            fp.close()
 
-    print('Wrote %d songs!' % len(songs))
+        print('%s: Wrote %d songs!' % (k, len(songs)))

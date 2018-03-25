@@ -1,0 +1,51 @@
+{
+	"title": "Taiko no Tatsujin: Tokumori!",
+	"title_ja": "太鼓の達人 特盛り！",
+
+	"title_id": 1407375153635328,
+	"default_client_id": 427395302274891806,
+
+	"pointers": {
+		"mode": 274087900,
+		"song_mode": 274071276,
+
+		"song": 274217760,
+		"difficulty": 274217188
+	},
+
+    "modes": {
+		"6": ["In a menu", "Title screen"],
+		"7": ["In a menu", "Player entry"],
+		"8": ["In a menu", "Main menu"],
+
+		"9": ["Taiko Mode", "Selecting a song"],
+		"10": ["Baton Touch", "Selecting a song"],
+
+		"11": ["Playing a song"],
+		"12": ["Results"],
+
+		"13": ["Kisekae Studio"],
+		"14": ["Intro-don"],
+		"15": ["Mecha-don Gacha"],
+
+		"16": ["In a menu", "Stats"],
+		"17": ["Looking at stats", "Stamp Book"],
+		"18": ["Looking at stats", "Player stats"],
+		"19": ["Looking at stats", "Seals"],
+
+		"20": ["In a menu", "Settings"],
+		"21": ["Playing tutorial"]
+    },
+
+    "song_modes": {
+        "0": "Taiko Mode",
+        "1": "Baton Touch"
+    },
+
+    "levels": {
+        "0": "Easy",
+        "1": "Normal",
+        "2": "Hard",
+        "3": "Extreme"
+    }
+}

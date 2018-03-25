@@ -1,0 +1,65 @@
+{
+	"title": "Taiko no Tatsujin: Atsumete Tomodachi Daisakusen!",
+	"title_ja": "太鼓の達人 あつめて★ともだち大作戦！",
+
+	"title_id": 1407375153901568,
+	"default_client_id": 422847967347867654,
+
+	"pointers": {
+		"mode": 274114180,
+		"song_mode": 274096500,
+
+		"song": 274246556,
+		"difficulty": 274245984
+	},
+
+    "modes": {
+		"6": ["In a menu", "Title screen"],
+		"7": ["In a menu", "Player entry"],
+		"8": ["In a menu", "Main menu"],
+
+		"9": ["Taiko Mode", "Selecting a song"],
+		"10": ["Baton Touch", "Selecting a song"],
+
+		"11": ["Playing a song"],
+		"12": ["Results"],
+
+		"13": ["Kisekae Studio"],
+		"14": ["Intro-don"],
+		"15": ["Mecha-don Gacha"],
+
+		"16": ["In a menu", "Stats"],
+		"17": ["Looking at stats", "Stamp Book"],
+		"18": ["Looking at stats", "Player stats"],
+		"19": ["Looking at stats", "Seals"],
+
+		"20": ["In a menu", "Additional Content"],
+		"21": ["In a menu", "Settings"],
+		"22": ["Playing tutorial"],
+
+		"24": ["In a menu", "Tomodachi Daisakusen"],
+		"25": ["Tomodachi Daisakusen", "On the streets"],
+		"26": ["Tomodachi Daisakusen", "Viewing results"],
+		"28": ["Tomodachi Daisakusen", "Wada House"],
+		"29": ["Tomodachi Daisakusen", "Friend Book"],
+		"30": ["Tomodachi Daisakusen", "Settings"],
+		"31": ["Tomodachi Daisakusen", "Selecting difficulty"],
+
+		"32": ["Tomodachi Daisakusen", "In a cutscene"],
+		"33": ["Tomodachi Daisakusen", "In a cutscene"],
+		"34": ["In a cutscene"]
+    },
+
+    "song_modes": {
+        "0": "Taiko Mode",
+        "1": "Tomodachi Daisakusen",
+        "2": "Baton Touch"
+    },
+
+    "levels": {
+        "0": "Easy",
+        "1": "Normal",
+        "2": "Hard",
+        "3": "Extreme"
+    }
+}

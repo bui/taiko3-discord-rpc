@@ -1,0 +1,46 @@
+{
+	"title": "Taiko no Tatsujin: Wii U Version!",
+	"title_ja": "太鼓の達人 Wii Uば～じょん！",
+
+	"title_id": 1407375153242624,
+	"default_client_id": 427395818283073537,
+
+	"pointers": {
+		"mode": 274123008,
+		"song_mode": 274095408,
+
+		"song": 278151188,
+		"difficulty": 278150644
+	},
+
+    "modes": {
+		"6": ["In a menu", "Title screen"],
+		"7": ["In a menu", "Player entry"],
+		"8": ["In a menu", "Main menu"],
+
+		"9": ["Taiko Mode", "Selecting a song"],
+		"10": ["Baton Touch", "Selecting a song"],
+
+		"11": ["Playing a song"],
+		"12": ["Results"],
+
+		"13": ["Kisekae Studio"],
+		"14": ["Stamp Book"],
+		"15": ["Settings"],
+
+		"16": ["Playing tutorial"],
+		"17": ["Viewing credits"]
+    },
+
+    "song_modes": {
+        "0": "Taiko Mode",
+        "1": "Baton Touch"
+    },
+
+    "levels": {
+        "116": "Easy",
+        "118": "Normal",
+        "120": "Hard",
+        "122": "Extreme"
+    }
+}
