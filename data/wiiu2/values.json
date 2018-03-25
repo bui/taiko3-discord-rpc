@@ -9,8 +9,8 @@
 		"mode": 274087900,
 		"song_mode": 274071276,
 
-		"song": 274217760,
-		"difficulty": 274217188
+		"song": [274217760],
+		"difficulty": [274217188]
 	},
 
     "modes": {

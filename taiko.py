@@ -127,9 +127,13 @@ if __name__ == '__main__':
                 song_mode = cur['song_modes'][mode_id]
 
             if event == '11':
-                course = int(hexlify(gecko.readmem(cur['pointers']['song'], 4)), 16)
-                difficulty = str(int(hexlify(gecko.readmem(cur['pointers']['difficulty'], 4)), 16))
-                level = cur['levels'][difficulty]
+                for idx in range(len(cur['pointers']['song'])):
+                    course = int(hexlify(gecko.readmem(cur['pointers']['song'][idx], 4)), 16)
+                    difficulty = str(int(hexlify(gecko.readmem(cur['pointers']['difficulty'][idx], 4)), 16))
+                    try:
+                        level = cur['levels'][difficulty]
+                    except KeyError:
+                        continue
 
                 song_title = '???'
                 if str(course) in songlist:
