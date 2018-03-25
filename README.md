@@ -1,6 +1,8 @@
 ## taiko3-discord-rpc
 Discord rich presence integration for *Taiko no Tatsujin* titles on Wii U.
 
+![](https://s7.postimg.org/vltjohifv/taiko_screen.png)
+
 ### Supported titles
 * *[Taiko no Tatsujin: Wii U Version!](http://wiiu.taiko-ch.net/)* (太鼓の達人 Wii Uば～じょん！)
 * *[Taiko no Tatsujin: Tokumori!](http://wiiu2.taiko-ch.net/)* (太鼓の達人 特盛り！)
