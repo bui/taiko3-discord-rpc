@@ -21,3 +21,7 @@ Song data in `data/` is ripped from the game using `extract_songs.py`, but pre-b
 	* For example: `./taiko.py 192.168.0.10`
 	* Use `--client-id [ID]` if you want to use your own Discord application
 4. Start playing!
+
+## Warnings
+* Avoid accessing any Miiverse features in the game, as this tends to crash tcpGecko. If you see the screen below during game startup, select the right option (いいえ).<br>
+![](https://s7.postimg.org/c9fz4h8ff/Honeyview_cc.png)
