@@ -101,7 +101,7 @@ if __name__ == '__main__':
                 sys.exit()
             elif not launchable:
                 sys.exit('There are no Taiko no Tatsujin titles installed on your Wii U.')
-            else:
+            elif launchable[0][1] != current:
                 gecko = launch_title(gecko, launchable[0][1])
                 cur = json.loads(open('data/%s/values.json' % launchable[0][0], encoding='utf8').read())
                 songlist = json.loads(open('data/%s/song_data.json' % launchable[0][0]).read())
