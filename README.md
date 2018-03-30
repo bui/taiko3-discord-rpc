@@ -8,6 +8,9 @@ Discord rich presence integration for *Taiko no Tatsujin* titles on Wii U.
 * *[Taiko no Tatsujin: Tokumori!](http://wiiu2.taiko-ch.net/)* (太鼓の達人 特盛り！)
 * *[Taiko no Tatsujin: Atsumete Tomodachi Daisakusen!](http://wiiu3.taiko-ch.net/)* (太鼓の達人 あつめて★ともだち大作戦！)
 
+## Binaries
+You can find pre-build binaries on the [Releases](https://github.com/bui/taiko3-discord-rpc/releases) page. They include a configuration file that you can edit, and batch files to auto-launch each title.
+
 ## Setup
 To use this program, you'll need to download its two dependencies manually.
 * **[pypresence](https://github.com/qwertyquerty/pypresence)** - drop `pypresence.py` in the same directory as `taiko.py`

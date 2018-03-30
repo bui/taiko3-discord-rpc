@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import argparse
+import configparser
 import json
 import sys
 import os
@@ -25,12 +26,15 @@ except ModuleNotFoundError:
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('server', help='console IP address')
+parser.add_argument('server', help='console IP address', nargs='?')
 parser.add_argument('-c', '--client-id', help='Discord client ID')
 parser.add_argument('-l', '--launch-auto', help='launch title automatically if not running', nargs='?', default=argparse.SUPPRESS)
 parser.add_argument('-j', '--jump', help='allow title jumping with --launch-auto', action='store_true')
 parser.add_argument('-n', '--nihongo', help='use Japanese strings for RPC', action='store_true')
 args = parser.parse_args()
+
+config = configparser.ConfigParser()
+config.read('config.ini')
 
 
 def get_current_title(gecko):
@@ -66,9 +70,12 @@ def launch_title(gecko, title):
 
 if __name__ == '__main__':
     titles = os.listdir('data')
+    server = args.server or config.get('main', 'ip', fallback=None)
+    if not server:
+        sys.exit('No IP address supplied')
 
     try:
-        gecko = tcpgecko.TCPGecko(args.server)
+        gecko = tcpgecko.TCPGecko(server)
     except TimeoutError:
         sys.exit('Unable to connect to tcpGecko - are you sure it\'s running on your console?')
 
@@ -114,9 +121,10 @@ if __name__ == '__main__':
     rpc = pypresence.client(args.client_id or str(cur['default_client_id']))
     rpc.start()
 
-    modes = cur['modes_ja'] if args.nihongo else cur['modes']
-    song_modes = cur['song_modes_ja'] if args.nihongo else cur['song_modes']
-    levels = cur['levels_ja'] if args.nihongo else cur['levels']
+    use_ja = args.nihongo or config.get('main', 'lang', fallback=None) == 'ja'
+    modes = cur['modes_ja'] if use_ja else cur['modes']
+    song_modes = cur['song_modes_ja'] if use_ja else cur['song_modes']
+    levels = cur['levels_ja'] if use_ja else cur['levels']
 
     last_event = None
     while True:
