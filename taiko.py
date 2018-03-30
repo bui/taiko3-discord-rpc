@@ -64,7 +64,7 @@ def launch_title(gecko, title):
     time.sleep(30)  # safe enough?
 
     print('Title changed; reconnecting...')
-    gecko = tcpgecko.TCPGecko(args.server)
+    gecko = tcpgecko.TCPGecko(server)
     return gecko
 
 
