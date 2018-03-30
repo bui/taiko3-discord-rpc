@@ -29,6 +29,7 @@ parser.add_argument('server', help='console IP address')
 parser.add_argument('-c', '--client-id', help='Discord client ID')
 parser.add_argument('-l', '--launch-auto', help='launch title automatically if not running', nargs='?', default=argparse.SUPPRESS)
 parser.add_argument('-j', '--jump', help='allow title jumping with --launch-auto', action='store_true')
+parser.add_argument('-n', '--nihongo', help='use Japanese strings for RPC', action='store_true')
 args = parser.parse_args()
 
 
@@ -113,25 +114,29 @@ if __name__ == '__main__':
     rpc = pypresence.client(args.client_id or str(cur['default_client_id']))
     rpc.start()
 
+    modes = cur['modes_ja'] if args.nihongo else cur['modes']
+    song_modes = cur['song_modes_ja'] if args.nihongo else cur['song_modes']
+    levels = cur['levels_ja'] if args.nihongo else cur['levels']
+
     last_event = None
     while True:
         event = str(int(hexlify(gecko.readmem(cur['pointers']['mode'], 4)), 16))
 
         if event != last_event:
             last_event = event
-            mode = cur['modes'][event] if event in cur['modes'] else None
+            mode = modes[event] if event in modes else None
 
             song_mode = None
             mode_id = str(int(hexlify(gecko.readmem(cur['pointers']['song_mode'], 4)), 16))
-            if mode_id in cur['song_modes']:
-                song_mode = cur['song_modes'][mode_id]
+            if mode_id in song_modes:
+                song_mode = song_modes[mode_id]
 
             if event == '11':
                 for idx in range(len(cur['pointers']['song'])):
                     course = int(hexlify(gecko.readmem(cur['pointers']['song'][idx], 4)), 16)
                     difficulty = str(int(hexlify(gecko.readmem(cur['pointers']['difficulty'][idx], 4)), 16))
                     try:
-                        level = cur['levels'][difficulty]
+                        level = levels[difficulty]
                     except KeyError:
                         continue
 
