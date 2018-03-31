@@ -145,6 +145,7 @@ if __name__ == '__main__':
                     difficulty = str(int(hexlify(gecko.readmem(cur['pointers']['difficulty'][idx], 4)), 16))
                     try:
                         level = levels[difficulty]
+                        break
                     except KeyError:
                         continue
 
