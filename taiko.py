@@ -22,7 +22,7 @@ except ModuleNotFoundError:
 try:
     import pypresence
 except ModuleNotFoundError:
-    sys.exit('pypresence.py not found! Download it from https://github.com/qwertyquerty/pypresence')
+    sys.exit('pypresence not found! Install it using pip, or from https://github.com/qwertyquerty/pypresence')
 
 
 parser = argparse.ArgumentParser()
