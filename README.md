@@ -21,6 +21,8 @@ Lazy setup:
     wget -O common.py https://raw.githubusercontent.com/wiiudev/pyGecko/master/common.py
     2to3 -w tcpgecko.py
 
+Song data in `data/` is ripped from the game using `extract_songs.py`, but pre-built versions are provided for your convenience. These versions include all DLC songs.
+
 ## Usage
 1. Run [tcpGecko](https://github.com/BullyWiiPlaza/tcpgecko) on your Wii U
 2. Run a *Taiko no Tatsujin* title on your Wii U (not required if you use `--launch-auto`)
