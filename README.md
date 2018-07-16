@@ -1,5 +1,5 @@
 ## taiko3-discord-rpc
-Discord rich presence integration for *Taiko no Tatsujin* titles on Wii U.
+Discord rich presence integration for *Taiko no Tatsujin* titles on Wii U and Nintendo Switch.
 
 ![](https://my.mixtape.moe/aoxdkh.png)
 
@@ -7,6 +7,7 @@ Discord rich presence integration for *Taiko no Tatsujin* titles on Wii U.
 * *[Taiko no Tatsujin: Wii U Version!](http://wiiu.taiko-ch.net/)* (太鼓の達人 Wii Uば～じょん！)
 * *[Taiko no Tatsujin: Tokumori!](http://wiiu2.taiko-ch.net/)* (太鼓の達人 特盛り！)
 * *[Taiko no Tatsujin: Atsumete Tomodachi Daisakusen!](http://wiiu3.taiko-ch.net/)* (太鼓の達人 あつめて★ともだち大作戦！)
+* *[Taiko no Tatsujin: Drum 'n' Fun!](http://switch.taiko-ch.net/)* (太鼓の達人 Nintendo Switchば～じょん！)
 
 ## Binaries
 You can find pre-built binaries on the [Releases](https://github.com/bui/taiko3-discord-rpc/releases) page. They include a configuration file that you can edit, and batch files to auto-launch each title.
