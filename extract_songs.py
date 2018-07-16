@@ -85,11 +85,12 @@ def process_taikonx(path):
         stars_normal = song['starNormal']
         stars_hard = song['starHard']
         stars_extreme = song['starMania']
+        stars_ura = song['starUra']
 
         if song_id not in songs.keys():
             proc_songs[song_id] = {'title': song_title,
                                    'stars': {'0': stars_easy, '1': stars_normal,
-                                             '2': stars_hard, '4': stars_extreme}}
+                                             '2': stars_hard, '4': stars_extreme, '5': stars_ura}}
 
     return proc_songs
 
